@@ -1,10 +1,11 @@
+// Archivo de enrutamientos
 var express = require("express");
 var router = express.Router();
 const { conexion } = require("../database/conexion");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.render("index", { title: "Pagina Hospital" });
 });
 
 // Enrutamiento para visualizar los médicos de la base de datos
@@ -16,6 +17,18 @@ router.get("/listado-medicos", (req, res) => {
     } else {
       console.log(resultado);
       res.status(200).render("medicos", { resultado });
+    }
+  });
+});
+
+// Enrutamiento para visualizar a los pacientes
+router.get("/listado-pacientes", (req, res) => {
+  conexion.query("SELECT * FROM pacientes;", (error, resultado) => {
+    if (error) {
+      console.log("Ocurrió un error en la ejecución", error);
+      res.status(500).send("Error en la ejecución");
+    } else {
+      res.status(200).render("pacientes", { resultado });
     }
   });
 });
@@ -38,10 +51,45 @@ router.post("/agregar-medico", (req, res) => {
         console.log("Ocurrió un error en la ejecución", error);
         res.status(500).send("Error en la ejecución");
       } else {
-        res.status(200).redirect("/listado-medicos")
+        res.status(200).redirect("/listado-medicos");
       }
     }
   );
 });
+
+// Enrutamiento para agregar pacientes a la base de datos
+router.post("/agregar-paciente", (req, res) => {
+  const nombres = req.body.nombres;
+  const apellidos = req.body.apellidos;
+  const cedula = req.body.cedula;
+  const fecha_nacimiento = req.body.fecha_nacimiento;
+  const telefono = req.body.telefono;
+
+  conexion.query(
+    `INSERT INTO pacientes (cedula, nombres, apellidos, fecha_nacimiento, telefono) VALUES (${cedula}, '${nombres}', '${apellidos}', '${fecha_nacimiento}', '${telefono}')`,
+    (error, resultado) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Ocurrió un error en la consulta");
+      } else {
+        res.status(200).redirect("/listado-pacientes");
+      }
+    }
+  );
+});
+
+//Enrutamiento para consultar los médicos de una especialidad y poder agendar la cita
+router.post('/consulta-cita', (req, res) => {
+  const especialidad = req.body.especialidad
+
+  conexion.query(`SELECT * FROM medicos WHERE especialidad='${especialidad}';`, (error, resultado) => {
+    if (error) {
+      console.log(error)
+      res.status(500).send('Ocurrió un error en la consulta')
+    } else {
+      res.status(200).render('agendar-citas', { resultado })
+    }
+  })
+})
 
 module.exports = router;

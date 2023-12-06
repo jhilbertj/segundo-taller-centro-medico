@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas de especialidades</title>
+    <link rel="stylesheet" href="./stylesheets/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Centro Médico Vital Salud</h1>
+    </header>
+    <main>
+
+        <h2>Consulta de citas médicas</h2>
+        <div class="container-form">
+            <form method="post" action="/consulta-cita">
+                <label for="especializad">Especialidad:</label>
+                <select name="especialidad" id="especialidad" required>
+                    <option value="">----------Seleccione una opción----------</option>
+                    <option value="Medicina general">Medicina General</option>
+                    <option value="Cardiología">Cardiología</option>
+                    <option value="Medicina interna">Medicina Interna</option>
+                    <option value="Dermatología">Dermatología</option>
+                    <option value="Rehabilitación física">Rehabilitación Física</option>
+                    <option value="Psicología">Psicología</option>
+                    <option value="Odontología">Odontología</option>
+                    <option value="Radiología">Radiología</option>
+                </select>
+                <input type="submit" value="Consultar" class="container-bottom">
+            </form>
+
+            <a href="index.html"><input type="button" value="Volver" class="container-bottom"></a>
+        </div>
+
+    </main>
+    <footer class="pie-principal">
+        <h2>Realizado por:</h2>
+        <p>Jonathan Garavito - Grupo 1 - Desarrollo Web Backend</p>
+    </footer>
+
+</body>
+
+</html>
