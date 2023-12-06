@@ -92,4 +92,19 @@ router.post('/consulta-cita', (req, res) => {
   })
 })
 
+// Enrutamiento para guardar una cita en la base de datos
+router.post('/agregar-cita', (req, res) => {
+  const cedula_paciente = req.body.cedula
+  const fecha_cita = req.body.fecha_cita
+  const cedula_medico = req.body.medico
+  conexion.query(`INSERT INTO cita_medica (cedula_medico, cedula_paciente, fecha_cita) VALUES (${cedula_medico}, ${cedula_paciente}, '${fecha_cita}')`, (error, resultado) => {
+    if (error) {
+      console.log(error)
+      res.status(500).send('Ocurrió un error en la consulta')
+    } else {
+      res.status(200).redirect('/listado-citas')
+    }
+  })
+})
+
 module.exports = router;
