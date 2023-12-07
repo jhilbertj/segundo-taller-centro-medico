@@ -33,6 +33,18 @@ router.get("/listado-pacientes", (req, res) => {
   });
 });
 
+//Enrutamiento para visualizar las citas agendadas
+router.get('/listado-citas', (req, res) => {
+  conexion.query('SELECT fecha_cita, pacientes.nombres, pacientes.apellidos, pacientes.telefono, medicos.especialidad, medicos.consultorio, medicos.nombres nombresMedico, medicos.apellidos apellidosMedico FROM cita_medica, pacientes, medicos WHERE cedula_medico=medicos.cedula AND cedula_paciente=pacientes.cedula;', (error, resultado) => {
+    if (error) {
+      console.log('Ocurrio un error en la ejecución', error)
+      res.status(500).send('Error en la ejecución')
+    } else {
+      res.status(200).render('citas', { resultado })
+    }
+  })
+})
+
 // Enrutamiento para agregar un médico a la base de datos
 router.post("/agregar-medico", (req, res) => {
   const nombres = req.body.nombres;
